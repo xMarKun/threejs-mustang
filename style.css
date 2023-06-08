@@ -1,0 +1,61 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+#canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+.lcl-controller {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 50%;
+  padding-top: 50%;
+}
+.lcl-controller__btn {
+  position: absolute;
+  margin: auto;
+  width: 33.33%;
+  height: 33.33%;
+  background: rgba(0, 0, 0, 0.2);
+}
+.lcl-controller__btn:not(.lcl-controller__klaxon) {
+  border: 0.1px solid #000000;
+}
+.lcl-controller__forward {
+  top: 0;
+  left: 0;
+  right: 0;
+}
+.lcl-controller__backward {
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+.lcl-controller__right {
+  top: 0;
+  right: 0;
+  bottom: 0;
+}
+.lcl-controller__left {
+  top: 0;
+  left: 0;
+  bottom: 0;
+}
+.lcl-controller__klaxon {
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+.lcl-controller__brake {
+  bottom: 0;
+  right: -33%;
+}
