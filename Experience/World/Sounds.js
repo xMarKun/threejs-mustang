@@ -5,10 +5,10 @@ export default class Sounds {
     this.experience = new Experience();
     this.resources = this.experience.resources;
 
-    this.setSettings();
+    this.setItems();
   }
 
-  setSettings() {
+  setItems() {
     this.sounds = {};
     this.sounds.items = {};
 

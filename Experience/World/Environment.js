@@ -37,13 +37,5 @@ export default class Environment {
 
   resize() {}
 
-  update() {
-    // this.sunLight.target = this.actualChassis;
-    // this.sunLight.lookAt(this.actualChassis.position);
-    // this.sunLight.position.set(
-    //   this.physics.car.chassis.body.position.x + 1.5,
-    //   this.physics.car.chassis.body.position.y + 7,
-    //   this.physics.car.chassis.body.position.z + 3
-    // );
-  }
+  update() {}
 }

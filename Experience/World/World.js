@@ -32,6 +32,5 @@ export default class World {
     this.rocks && this.rocks.update();
     this.slope && this.slope.update();
     this.mustang && this.mustang.update();
-    this.environment && this.environment.update();
   }
 }
