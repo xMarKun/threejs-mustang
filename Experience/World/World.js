@@ -14,6 +14,7 @@ export default class World {
     this.resources = this.experience.resources;
 
     this.resources.on('ready', () => {
+      this.controls = new Controls();
       this.sounds = new Sounds();
       this.physics = new Physics();
       this.rocks = new Rocks();
@@ -21,7 +22,6 @@ export default class World {
       this.floor = new Floor();
       this.mustang = new Mustang();
       this.environment = new Environment();
-      this.controls = new Controls();
     });
   }
 

@@ -7,6 +7,7 @@ export default class Physics {
   constructor() {
     this.experience = new Experience();
     this.scene = this.experience.scene;
+    this.controls = this.experience.world.controls;
     this.demo = new Demo();
 
     this.setWorld();
@@ -60,6 +61,9 @@ export default class Physics {
     this.car.options.wheelRollInfluence = 0.15;
     this.car.options.wheelMaxSuspensionTravel = 0.15;
     this.car.options.wheelCustomSlidingRotationalSpeed = 40;
+    this.car.options.maxSteerVal = 0.5;
+    this.car.options.maxForce = 500;
+    this.car.options.brakeForce = 10;
 
     // Build the car chassis
     this.car.chassis = {};
@@ -151,147 +155,6 @@ export default class Physics {
     this.car.jump = () => {
       this.car.chassis.body.applyLocalImpulse(new CANNON.Vec3(0, 400, 0), new CANNON.Vec3(0, 0, 0));
     };
-
-    // Keybindings
-    // touch device
-    if ('ontouchstart' in window || navigator.maxTouchPoints) {
-      const maxSteerVal = 0.5;
-      const maxForce = 500;
-      const brakeForce = 10;
-      const forwardElm = document.querySelector('.lcl-controller__forward');
-      const backwardElm = document.querySelector('.lcl-controller__backward');
-      const rightElm = document.querySelector('.lcl-controller__right');
-      const leftElm = document.querySelector('.lcl-controller__left');
-      const brakeElm = document.querySelector('.lcl-controller__brake');
-      const controllerElm = document.querySelector('.lcl-controller');
-      controllerElm.style.display = 'block';
-      controllerElm.addEventListener('touchstart', (event) => {
-        event.preventDefault();
-      });
-      forwardElm.addEventListener('touchstart', () => {
-        this.car.vehicle.applyEngineForce(-maxForce, 2);
-        this.car.vehicle.applyEngineForce(-maxForce, 3);
-      });
-      forwardElm.addEventListener('touchend', () => {
-        this.car.vehicle.applyEngineForce(0, 2);
-        this.car.vehicle.applyEngineForce(0, 3);
-      });
-      backwardElm.addEventListener('touchstart', () => {
-        this.car.vehicle.applyEngineForce(maxForce, 2);
-        this.car.vehicle.applyEngineForce(maxForce, 3);
-      });
-      backwardElm.addEventListener('touchend', () => {
-        this.car.vehicle.applyEngineForce(0, 2);
-        this.car.vehicle.applyEngineForce(0, 3);
-      });
-      rightElm.addEventListener('touchstart', () => {
-        this.car.vehicle.setSteeringValue(-maxSteerVal, 0);
-        this.car.vehicle.setSteeringValue(-maxSteerVal, 1);
-      });
-      rightElm.addEventListener('touchend', () => {
-        this.car.vehicle.setSteeringValue(0, 0);
-        this.car.vehicle.setSteeringValue(0, 1);
-      });
-      leftElm.addEventListener('touchstart', () => {
-        this.car.vehicle.setSteeringValue(maxSteerVal, 0);
-        this.car.vehicle.setSteeringValue(maxSteerVal, 1);
-      });
-      leftElm.addEventListener('touchend', () => {
-        this.car.vehicle.setSteeringValue(0, 0);
-        this.car.vehicle.setSteeringValue(0, 1);
-      });
-      brakeElm.addEventListener('touchstart', () => {
-        this.car.vehicle.setBrake(brakeForce, 0);
-        this.car.vehicle.setBrake(brakeForce, 1);
-        this.car.vehicle.setBrake(brakeForce, 2);
-        this.car.vehicle.setBrake(brakeForce, 3);
-      });
-      brakeElm.addEventListener('touchend', () => {
-        this.car.vehicle.setBrake(0, 0);
-        this.car.vehicle.setBrake(0, 1);
-        this.car.vehicle.setBrake(0, 2);
-        this.car.vehicle.setBrake(0, 3);
-      });
-    }
-    // no touch device
-    else {
-      document.querySelector('.lcl-controller').remove();
-      // Add force on keydown
-      document.addEventListener('keydown', (event) => {
-        const maxSteerVal = 0.5;
-        const maxForce = 500;
-        const brakeForce = 10;
-
-        switch (event.key) {
-          case 'w':
-          case 'ArrowUp':
-            this.car.vehicle.applyEngineForce(-maxForce, 2);
-            this.car.vehicle.applyEngineForce(-maxForce, 3);
-            break;
-
-          case 's':
-          case 'ArrowDown':
-            this.car.vehicle.applyEngineForce(maxForce, 2);
-            this.car.vehicle.applyEngineForce(maxForce, 3);
-            break;
-
-          case 'a':
-          case 'ArrowLeft':
-            this.car.vehicle.setSteeringValue(maxSteerVal, 0);
-            this.car.vehicle.setSteeringValue(maxSteerVal, 1);
-            break;
-
-          case 'd':
-          case 'ArrowRight':
-            this.car.vehicle.setSteeringValue(-maxSteerVal, 0);
-            this.car.vehicle.setSteeringValue(-maxSteerVal, 1);
-            break;
-
-          case 'b':
-            this.car.vehicle.setBrake(brakeForce, 0);
-            this.car.vehicle.setBrake(brakeForce, 1);
-            this.car.vehicle.setBrake(brakeForce, 2);
-            this.car.vehicle.setBrake(brakeForce, 3);
-            break;
-        }
-      });
-
-      // Reset force on keyup
-      document.addEventListener('keyup', (event) => {
-        switch (event.key) {
-          case 'w':
-          case 'ArrowUp':
-            this.car.vehicle.applyEngineForce(0, 2);
-            this.car.vehicle.applyEngineForce(0, 3);
-            break;
-
-          case 's':
-          case 'ArrowDown':
-            this.car.vehicle.applyEngineForce(0, 2);
-            this.car.vehicle.applyEngineForce(0, 3);
-            break;
-
-          case 'a':
-          case 'ArrowLeft':
-            this.car.vehicle.setSteeringValue(0, 0);
-            this.car.vehicle.setSteeringValue(0, 1);
-            break;
-
-          case 'd':
-          case 'ArrowRight':
-            this.car.vehicle.setSteeringValue(0, 0);
-            this.car.vehicle.setSteeringValue(0, 1);
-            break;
-
-          case 'b':
-            this.car.vehicle.setBrake(0, 0);
-            this.car.vehicle.setBrake(0, 1);
-            this.car.vehicle.setBrake(0, 2);
-            this.car.vehicle.setBrake(0, 3);
-            break;
-        }
-      });
-    }
   }
 
   setFloor() {
@@ -377,6 +240,38 @@ export default class Physics {
 
   update() {
     this.world.fixedStep();
+
+    // car movement
+    // forward and backward
+    if (this.controls.actions.forward || this.controls.actions.backward) {
+      const force = (this.controls.actions.forward ? -1 : 1) * this.car.options.maxForce;
+      this.car.vehicle.applyEngineForce(force, 2);
+      this.car.vehicle.applyEngineForce(force, 3);
+    } else {
+      this.car.vehicle.applyEngineForce(0, 2);
+      this.car.vehicle.applyEngineForce(0, 3);
+    }
+    // right and left
+    if (this.controls.actions.right || this.controls.actions.left) {
+      const force = (this.controls.actions.right ? -1 : 1) * this.car.options.maxSteerVal;
+      this.car.vehicle.setSteeringValue(force, 0);
+      this.car.vehicle.setSteeringValue(force, 1);
+    } else {
+      this.car.vehicle.setSteeringValue(0, 0);
+      this.car.vehicle.setSteeringValue(0, 1);
+    }
+    // brake
+    if (this.controls.actions.brake) {
+      this.car.vehicle.setBrake(this.car.options.brakeForce, 0);
+      this.car.vehicle.setBrake(this.car.options.brakeForce, 1);
+      this.car.vehicle.setBrake(this.car.options.brakeForce, 2);
+      this.car.vehicle.setBrake(this.car.options.brakeForce, 3);
+    } else {
+      this.car.vehicle.setBrake(0, 0);
+      this.car.vehicle.setBrake(0, 1);
+      this.car.vehicle.setBrake(0, 2);
+      this.car.vehicle.setBrake(0, 3);
+    }
 
     // update rocks mesh position
     // this.rocks.meshes.forEach((mesh, index) => {
