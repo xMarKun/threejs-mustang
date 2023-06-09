@@ -33,30 +33,26 @@ export default class Mustang {
     this.klaxon.waitDuration = 800;
     this.klaxon.can = true;
 
-    if ('ontouchstart' in window || navigator.maxTouchPoints) {
-      const klaxonElm = document.querySelector('.lcl-controller__klaxon');
-      klaxonElm.addEventListener('touchstart', () => {
-        if (this.klaxon.can) {
-          this.klaxon.can = false;
-          window.setTimeout(() => {
-            this.klaxon.can = true;
-          }, this.klaxon.waitDuration);
+    this.klaxon.jump = () => {
+      if (this.klaxon.can) {
+        this.klaxon.can = false;
+        window.setTimeout(() => {
+          this.klaxon.can = true;
+        }, this.klaxon.waitDuration);
 
-          this.physics.car.jump();
-          this.sounds.play('klaxon');
-        }
+        this.physics.car.jump();
+        this.sounds.play('klaxon');
+      }
+    };
+
+    if ('ontouchstart' in window || navigator.maxTouchPoints) {
+      const klaxonElm = document.getElementById('ctrl-klaxon');
+      klaxonElm.addEventListener('touchstart', () => {
+        this.klaxon.jump();
       });
     } else {
       window.addEventListener('keydown', (event) => {
-        if (event.key === ' ' && this.klaxon.can) {
-          this.klaxon.can = false;
-          window.setTimeout(() => {
-            this.klaxon.can = true;
-          }, this.klaxon.waitDuration);
-
-          this.physics.car.jump();
-          this.sounds.play('klaxon');
-        }
+        event.key === ' ' && this.klaxon.jump();
       });
     }
   }
