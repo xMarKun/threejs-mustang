@@ -1,4 +1,4 @@
-# Three.js Template
+# Three.js Mustang
 
 ## 使い方
 
